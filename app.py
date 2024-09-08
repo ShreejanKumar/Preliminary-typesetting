@@ -74,7 +74,7 @@ elif page_type == "Copyright Page":
         html_pth = save_response(response)
         main_pdf = 'copywright.pdf'
 
-        loop = asyncio.ProactorEventLoop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
