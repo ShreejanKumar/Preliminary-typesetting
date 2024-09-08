@@ -97,7 +97,7 @@ elif page_type == "Others":
         html_pth = save_response(response)
         main_pdf = 'other.pdf'
 
-        loop = asyncio.ProactorEventLoop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
@@ -120,7 +120,7 @@ elif page_type == "Glossary":
         html_pth = save_response(response)
         main_pdf = 'glosary.pdf'
 
-        loop = asyncio.ProactorEventLoop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
