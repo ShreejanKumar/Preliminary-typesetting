@@ -144,7 +144,7 @@ elif page_type == "Author's Praise":
         html_pth = save_response(response)
         main_pdf = 'authors_praise.pdf'
 
-        loop = asyncio.ProactorEventLoop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
