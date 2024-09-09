@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from openai import OpenAI
 
-def get_response_o(chapter, font_size, font_name):
+def get_response_a(chapter, font_size, font_name):
   
     # Set up OpenAI API client
     api_key = st.secrets["Openai_api"]
