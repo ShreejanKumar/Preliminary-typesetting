@@ -1,6 +1,11 @@
 import os
 import streamlit as st
 from openai import OpenAI
+import json
+import PyPDF2
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.pdfgen import canvas
+from pypdf import PdfReader, PdfWriter
 
 def get_response_g(chapter, font_size, font_name):
   
