@@ -3,6 +3,7 @@ from title import create_title_page
 from copywright import get_response_c, save_response
 from others import get_response_o, save_response
 from Glossary import get_response_g, save_response
+from author_praise import get_response_a, save_response
 import nest_asyncio
 import asyncio
 from playwright.async_api import async_playwright
@@ -46,7 +47,7 @@ st.title("Book Preliminary Pages PDF Generator")
 
 # Page selection
 page_type = st.selectbox("Select the type of page to create", 
-                         ["Title Page", "Copyright Page", "Glossary", "Others"])
+                         ["Title Page", "Copyright Page", "Glossary", "Author's Praise", "Others"])
 
 # Conditional inputs based on page type
 if page_type == "Title Page":
@@ -132,3 +133,25 @@ elif page_type == "Glossary":
                 mime="application/pdf"
             )
     
+elif page_type == "Author's Praise":
+    text = st.text_area("Enter the text")
+    
+    font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    font_size = st.text_input('Enter the Font Size')
+    
+    if st.button("Create Authors Praise Page"):
+        response = get_response_a(text, font_size, font_name)
+        html_pth = save_response(response)
+        main_pdf = 'authors_praise.pdf'
+
+        loop = asyncio.ProactorEventLoop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
+        
+        with open(main_pdf, "rb") as pdf_file:
+            st.download_button(
+                label="Download PDF",
+                data=pdf_file,
+                file_name=main_pdf,
+                mime="application/pdf"
+            )
