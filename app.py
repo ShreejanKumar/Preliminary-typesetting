@@ -1,8 +1,8 @@
 import streamlit as st
 from title import create_title_page
 from copywright import get_response_c, save_response
-from others import get_response_o, save_response
-from Glossary import get_response_g, save_response
+from others import get_response_o, save_response, get_pdf_page_count, create_overlay_pdf, overlay_headers_footers
+from Glossary import get_response_g, save_response, get_pdf_page_count, create_overlay_pdf, overlay_headers_footers
 from author_praise import get_response_a, save_response
 import nest_asyncio
 import asyncio
@@ -89,9 +89,13 @@ elif page_type == "Copyright Page":
 
 elif page_type == "Others":
     text = st.text_area("Enter the text")
-    
+    author_name = st.text_input('Enter the Author Name:')
+    book_name = st.text_input('Enter the Book Name:')
     font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
     font_size = st.text_input('Enter the Font Size')
+    first_page_no = st.number_input('Enter the First Page Number:', min_value=0, max_value=1000, step=1)
+    options = ['Left', 'Right']
+    first_page_position = st.selectbox('Select First Page Position:', options)
     
     if st.button("Create Page"):
         response = get_response_o(text, font_size, font_name)
@@ -102,19 +106,33 @@ elif page_type == "Others":
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
-        with open(main_pdf, "rb") as pdf_file:
+        total_pages = get_pdf_page_count(main_pdf)
+        overlay_pdf = "overlay.pdf"
+
+        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, font_name, first_page_position)
+        
+        final_pdf = 'final.pdf'
+
+        # Overlay the headers and footers
+        overlay_headers_footers(main_pdf, overlay_pdf, final_pdf)
+        
+        with open(final_pdf, "rb") as pdf_file:
             st.download_button(
-                label="Download PDF",
+                label="Download Glossary PDF",
                 data=pdf_file,
-                file_name=main_pdf,
+                file_name=final_pdf,
                 mime="application/pdf"
             )
 
 elif page_type == "Glossary":
     text = st.text_area("Enter the text")
-    
+    author_name = st.text_input('Enter the Author Name:')
+    book_name = st.text_input('Enter the Book Name:')
     font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
     font_size = st.text_input('Enter the Font Size')
+    first_page_no = st.number_input('Enter the First Page Number:', min_value=0, max_value=1000, step=1)
+    options = ['Left', 'Right']
+    first_page_position = st.selectbox('Select First Page Position:', options)
     
     if st.button("Create Glossary Page"):
         response = get_response_g(text, font_size, font_name)
@@ -125,11 +143,21 @@ elif page_type == "Glossary":
         asyncio.set_event_loop(loop)
         loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
         
-        with open(main_pdf, "rb") as pdf_file:
+        total_pages = get_pdf_page_count(main_pdf)
+        overlay_pdf = "overlay.pdf"
+
+        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, font_name, first_page_position)
+        
+        final_pdf = 'final.pdf'
+
+        # Overlay the headers and footers
+        overlay_headers_footers(main_pdf, overlay_pdf, final_pdf)
+        
+        with open(final_pdf, "rb") as pdf_file:
             st.download_button(
-                label="Download PDF",
+                label="Download Glossary PDF",
                 data=pdf_file,
-                file_name=main_pdf,
+                file_name=final_pdf,
                 mime="application/pdf"
             )
     
