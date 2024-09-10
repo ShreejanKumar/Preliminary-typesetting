@@ -3,6 +3,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.units import inch 
 from io import BytesIO
+from reportlab.platypus import Image
 
 def create_title_page(title, subtitle, author, font_name="Helvetica", title_size=36, subtitle_size=24, author_size=18):
     # Create a buffer to store the PDF
@@ -46,7 +47,12 @@ def create_title_page(title, subtitle, author, font_name="Helvetica", title_size
     content.append(Paragraph(subtitle, subtitle_style))
     content.append(Spacer(1, 1*inch))
     content.append(Paragraph(author, author_style))
+    content.append(Spacer(1, 2.25*inch))
     
+    # Add image at the end
+    img = Image("NU_Voice_Black.png", width=2*inch, height=2*inch)
+    content.append(img)
+
     # Build the PDF and save it to the buffer
     pdf.build(content)
     
