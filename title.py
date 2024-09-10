@@ -50,7 +50,7 @@ def create_title_page(title, subtitle, author, font_name="Helvetica", title_size
     content.append(Spacer(1, 2.25*inch))
     
     # Add image at the end
-    img = Image("ShreejanKumar/Preliminary-typesetting/NU_Voice_Black.png", width=2*inch, height=2*inch)
+    img = Image("NU_Voice_Black.png", width=2*inch, height=2*inch)
     content.append(img)
 
     # Build the PDF and save it to the buffer
