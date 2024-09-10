@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
-def get_response_o(chapter, font_size, font_name):
+def get_response_o(chapter, body_font_size, body_font_name, header_font_name, header_font_size):
   
   # Set up OpenAI API client
     
@@ -24,15 +24,17 @@ def get_response_o(chapter, font_size, font_name):
 
 Your task is to generate an HTML file based on the text I provide. Here are the details you need to consider:
 - Text: <<CHAPTER_TEXT>>
-- font_size: <<fontsize>>
-- font_name: <<fontname>>
+- font_size for body text: <<body_font_size>>
+- font_name for body text: <<body_font_name>>
+- font_size for header text: <<header_font_size>>
+- font_name for header text: <<header_font_name>>
 - Do not write anything else like ```html in the response, directly start with the doctype line.
 - Do not add any extra text or headings other than what is being provided
 - The Heading should be centred and leave some space from the top of the page
 Please ensure that the generated HTML document includes appropriate tags for the title, headings, paragraphs, and any necessary metadata, making it ready for web display. It's important to maintain proper indentation and include comments for clarity.
 
 """
-  prompt = prompt_template.replace("<<CHAPTER_TEXT>>", chapter).replace("<<fontsize>>", font_size + "px").replace("<<fontname>>", font_name)
+  prompt = prompt_template.replace("<<CHAPTER_TEXT>>", chapter).replace("<<body_font_size>>", body_font_size + "px").replace("<<body_font_name>>", body_font_name).replace("<<header_font_size>>", header_font_size + "px").replace("<<header_font_name>>", header_font_name)
   chat_completion = client.chat.completions.create(
         messages=[
             {

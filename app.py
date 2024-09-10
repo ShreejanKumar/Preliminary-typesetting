@@ -93,14 +93,21 @@ elif page_type == "Others":
     text = st.text_area("Enter the text")
     author_name = st.text_input('Enter the Author Name:')
     book_name = st.text_input('Enter the Book Name:')
-    font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
-    font_size = st.text_input('Enter the Font Size')
+    
+    # Font options for body text
+    body_font_name = st.selectbox("Select Body Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    body_font_size = st.text_input('Enter the Body Font Size')
+
+    # Font options for header text
+    header_font_name = st.selectbox("Select Header Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    header_font_size = st.text_input('Enter the Header Font Size')
+    
     first_page_no = st.number_input('Enter the First Page Number:', min_value=0, max_value=1000, step=1)
     options = ['Left', 'Right']
     first_page_position = st.selectbox('Select First Page Position:', options)
     
     if st.button("Create Page"):
-        response = get_response_o(text, font_size, font_name)
+        response = get_response_o(text, body_font_size, body_font_name, header_font_name, header_font_size)
         html_pth = save_response(response)
         main_pdf = 'other.pdf'
 
@@ -111,7 +118,7 @@ elif page_type == "Others":
         total_pages = get_pdf_page_count(main_pdf)
         overlay_pdf = "overlay.pdf"
 
-        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, font_name, first_page_position)
+        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, body_font_name, first_page_position)
         
         final_pdf = 'final.pdf'
 
@@ -130,14 +137,21 @@ elif page_type == "Glossary":
     text = st.text_area("Enter the text")
     author_name = st.text_input('Enter the Author Name:')
     book_name = st.text_input('Enter the Book Name:')
-    font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
-    font_size = st.text_input('Enter the Font Size')
+    
+    # Font options for body text
+    body_font_name = st.selectbox("Select Body Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    body_font_size = st.text_input('Enter the Body Font Size')
+
+    # Font options for header text
+    header_font_name = st.selectbox("Select Header Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    header_font_size = st.text_input('Enter the Header Font Size')
+    
     first_page_no = st.number_input('Enter the First Page Number:', min_value=0, max_value=1000, step=1)
     options = ['Left', 'Right']
     first_page_position = st.selectbox('Select First Page Position:', options)
     
     if st.button("Create Glossary Page"):
-        response = get_response_g(text, font_size, font_name)
+        response = get_response_g(text, body_font_size, body_font_name, header_font_name, header_font_size)
         html_pth = save_response(response)
         main_pdf = 'glosary.pdf'
 
@@ -148,7 +162,7 @@ elif page_type == "Glossary":
         total_pages = get_pdf_page_count(main_pdf)
         overlay_pdf = "overlay.pdf"
 
-        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, font_name, first_page_position)
+        create_overlay_pdf(overlay_pdf, total_pages, first_page_no, book_name, author_name, body_font_name, first_page_position)
         
         final_pdf = 'final.pdf'
 
@@ -166,11 +180,16 @@ elif page_type == "Glossary":
 elif page_type == "Author's Praise":
     text = st.text_area("Enter the text")
     
-    font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
-    font_size = st.text_input('Enter the Font Size')
+     # Font options for body text
+    body_font_name = st.selectbox("Select Body Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    body_font_size = st.text_input('Enter the Body Font Size')
+
+    # Font options for header text
+    header_font_name = st.selectbox("Select Header Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    header_font_size = st.text_input('Enter the Header Font Size')
     
     if st.button("Create Authors Praise Page"):
-        response = get_response_a(text, font_size, font_name)
+        response = get_response_a(text, body_font_size, body_font_name, header_font_name, header_font_size)
         html_pth = save_response(response)
         main_pdf = 'authors_praise.pdf'
 
