@@ -61,6 +61,21 @@ def get_pdf_page_count(pdf_file):
         reader = PyPDF2.PdfReader(f)
         return len(reader.pages)
 
+def int_to_roman(n):
+    roman_numerals = [
+        ('M', 1000), ('CM', 900), ('D', 500), ('CD', 400),
+        ('C', 100), ('XC', 90), ('L', 50), ('XL', 40),
+        ('X', 10), ('IX', 9), ('V', 5), ('IV', 4),
+        ('I', 1)
+    ]
+    result = []
+    for numeral, integer in roman_numerals:
+        count = n // integer
+        result.append(numeral * count)
+        n -= integer * count
+    return ''.join(result)
+
+
 def create_overlay_pdf(overlay_pdf, total_pages, starting_page_number, book_name, author_name, font, first_page_position="Right"):
     c = canvas.Canvas(overlay_pdf, pagesize=A4)
     width, height = A4
@@ -68,18 +83,21 @@ def create_overlay_pdf(overlay_pdf, total_pages, starting_page_number, book_name
     def draw_header_footer(page_number, position):
         c.setFont(font, 12)
 
+        # Convert the page number to Roman numerals
+        roman_page_number = int_to_roman(page_number)
+
         if page_number == starting_page_number:
             # First page of the chapter: Draw page number at the bottom center
             footer_y = 30  # Adjust this value to match the bottom text's baseline
-            c.drawCentredString(width / 2, footer_y, f'{page_number}')
+            c.drawCentredString(width / 2, footer_y, f'{roman_page_number}')
         elif position == "Right":
             # Right-side pages: Draw header on the right and page number at the right
             c.drawCentredString(width / 2, height - 40, book_name)
-            c.drawString(width - 84, height - 40, f'{page_number}')  # Adjusted x-coordinate for gap
+            c.drawString(width - 84, height - 40, f'{roman_page_number}')  # Adjusted x-coordinate for gap
         elif position == "Left":
             # Left-side pages: Draw header on the left and page number at the left
             c.drawCentredString(width / 2, height - 40, author_name)
-            c.drawString(62, height - 40, f'{page_number}')  # Adjusted x-coordinate for gap
+            c.drawString(62, height - 40, f'{roman_page_number}')  # Adjusted x-coordinate for gap
 
     # Set the initial position based on the first_page_position
     current_position = first_page_position
