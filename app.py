@@ -8,6 +8,8 @@ import nest_asyncio
 import asyncio
 from playwright.async_api import async_playwright
 from concurrent.futures import ThreadPoolExecutor
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 import os
 
 os.system('playwright install')
@@ -47,7 +49,7 @@ st.title("Book Preliminary Pages PDF Generator")
 
 # Page selection
 page_type = st.selectbox("Select the type of page to create", 
-                         ["Title Page", "Copyright Page", "Glossary", "Author's Praise", "Others"])
+                         ["Title Page", "Copyright Page", "Glossary", "Author's Praise", "Blank Page", "Others"])
 
 # Conditional inputs based on page type
 if page_type == "Title Page":
@@ -181,5 +183,25 @@ elif page_type == "Author's Praise":
                 label="Download PDF",
                 data=pdf_file,
                 file_name=main_pdf,
+                mime="application/pdf"
+            )
+
+elif page_type == "Blank Page":
+    st.write("This will generate a blank page in the PDF.")
+    
+    if st.button("Create Blank Page"):
+        
+        blank_pdf = "blank_page.pdf"
+        c = canvas.Canvas(blank_pdf, pagesize=A4)
+        
+        c.showPage()  # Finalize the page
+        c.save()
+        
+        # Allow the user to download the blank page
+        with open(blank_pdf, "rb") as pdf_file:
+            st.download_button(
+                label="Download Blank Page PDF",
+                data=pdf_file,
+                file_name="blank_page.pdf",
                 mime="application/pdf"
             )
