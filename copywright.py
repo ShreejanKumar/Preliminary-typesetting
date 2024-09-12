@@ -11,7 +11,7 @@ def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf
     # Set up styles
     styles = getSampleStyleSheet()
     normal_style = styles['Normal']
-    normal_style.fontSize = font_size
+    normal_style.fontSize = int(font_size)
     normal_style.leading = 14  # Adjust line spacing
 
     # List to hold the PDF elements
