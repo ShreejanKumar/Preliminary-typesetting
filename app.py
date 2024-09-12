@@ -37,7 +37,7 @@ async def html_to_pdf_with_margins(html_file, output_pdf):
                 'top': '85px',
                 'bottom': '60px',
                 'left': '70px',
-                'right': '40px'
+                'right': '60px'
             },
             'print_background': True
         }
