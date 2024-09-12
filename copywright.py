@@ -1,49 +1,48 @@
-import os
-import streamlit as st
-from openai import OpenAI
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.units import inch
 
-def get_response_c(chapter, font_size, font_name):
-  
-  # Set up OpenAI API client
+def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf):
+    # Create a document with A4 size
+    pdf = SimpleDocTemplate(output_pdf, pagesize=A4)
     
-  api_key = st.secrets["Openai_api"]
-  client = OpenAI(
-        # This is the default and can be omitted
-        api_key = api_key
-    )
-  
-  # Set up OpenAI model and prompt
-  model="gpt-4o-mini-2024-07-18"
-  prompt_template = """
-  You’re a skilled Editor and HTML expert with extensive experience in creating well-structured and visually appealing HTML documents. Your specialty lies in converting text into clean, semantic HTML while ensuring that the output is easy to read and maintain.
+    # Set up styles
+    styles = getSampleStyleSheet()
+    normal_style = styles['Normal']
+    normal_style.fontSize = 11
+    normal_style.leading = 14  # Adjust line spacing
 
-Your task is to generate an HTML file based on the copyright text I provide. Here are the details you need to consider:
-- Copyright Text: <<CHAPTER_TEXT>>
-- font_size: <<fontsize>>
-- font_name: <<fontname>>
-- Do not write anything else like ```html in the response, directly start with the doctype line.
-- Do not add any extra text or headings other than what is being provided
-Please ensure that the generated HTML document includes appropriate tags for the title, headings, paragraphs, and any necessary metadata, making it ready for web display. It's important to maintain proper indentation and include comments for clarity.
+    # List to hold the PDF elements
+    content = []
 
-"""
-  prompt = prompt_template.replace("<<CHAPTER_TEXT>>", chapter).replace("<<fontsize>>", font_size + "px").replace("<<fontname>>", font_name)
-  chat_completion = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": prompt,
-            }
-        ],
-        model=model,
-	temperature = 0
-    )
-
-  response = chat_completion.choices[0].message.content
-  return response
+    # Add the image
+    logo = Image("Screenshot (53).png")  # Adjust as needed
+    logo.hAlign = 'LEFT'
+    content.append(logo)
+    content.append(Spacer(1, 12))
     
-	
-def save_response(response):
-    html_pth = 'neww.html'
-    with open(html_pth, 'w', encoding='utf-8') as file:
-        file.write(response)
-    return html_pth
+    # Add the text
+    text_content = [
+        f"Copyright © {author_name} 2023",
+        "",
+        "The moral rights of the author have been asserted <br/> Database right NU VOICE PRESS (maker)",
+        "",
+        "This is a work of fiction and all characters and incidents <br/> described in this book are the product of the author's <br/> imagination. Any resemblance to actual persons, living or dead, <br/> is entirely coincidental.",
+        "",
+        "All rights reserved. Enquiries concerning reproduction outside <br/> the scope of the above should be sent to NU VOICE PRESS <br/> at the address above.",
+        "",
+        "ISBN: 978-81-963184-7-5",
+        "",  # Add a spacer after the ISBN line
+        f"Typeset by {typesetter_name}, Noida",
+        f"Printed at {printer_name}",
+        "Published by Nu Voice Press"
+    ]
+
+    for paragraph in text_content:
+        content.append(Paragraph(paragraph, normal_style))
+        content.append(Spacer(1, 12))  # Add space between paragraphs
+
+    # Build the PDF
+    pdf.build(content)

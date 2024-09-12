@@ -1,6 +1,6 @@
 import streamlit as st
 from title import create_title_page
-from copywright import get_response_c, save_response
+from copywright import create_copyright_page
 from others import get_response_o, save_response, get_pdf_page_count, create_overlay_pdf, overlay_headers_footers
 from Glossary import get_response_g, save_response, get_pdf_page_count, create_overlay_pdf, overlay_headers_footers
 from author_praise import get_response_a, save_response
@@ -67,25 +67,19 @@ if page_type == "Title Page":
         st.download_button("Download PDF", pdf_bytes, file_name="title_page.pdf")
 
 elif page_type == "Copyright Page":
-    copywright_text = st.text_area("Enter the copyright text")
     
-    font_name = st.selectbox("Select Font", ["Helvetica", "Helvetica-Bold", "Courier", "Times-Roman"])
+    author_name = st.text_input("Enter the Author's Name")
+    typesetter_name = st.text_input("Enter the Typesetter's Name")
+    printer_name = st.text_input("Enter the Printer's Name")
     font_size = st.text_input('Enter the Font Size')
-    
+    output_pdf = "copywright.pdf"
     if st.button("Create Copyright Page"):
-        response = get_response_c(copywright_text, font_size, font_name)
-        html_pth = save_response(response)
-        main_pdf = 'copywright.pdf'
-
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(html_to_pdf_with_margins(html_pth, main_pdf))
-        
-        with open(main_pdf, "rb") as pdf_file:
+        create_copyright_page(author_name, typesetter_name, printer_name, output_pdf)   
+        with open(output_pdf, "rb") as pdf_file:
             st.download_button(
                 label="Download Copywright PDF",
                 data=pdf_file,
-                file_name=main_pdf,
+                file_name=output_pdf,
                 mime="application/pdf"
             )
 
