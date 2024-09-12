@@ -4,14 +4,14 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.units import inch
 
-def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf):
+def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size):
     # Create a document with A4 size
     pdf = SimpleDocTemplate(output_pdf, pagesize=A4)
     
     # Set up styles
     styles = getSampleStyleSheet()
     normal_style = styles['Normal']
-    normal_style.fontSize = 11
+    normal_style.fontSize = font_size
     normal_style.leading = 14  # Adjust line spacing
 
     # List to hold the PDF elements

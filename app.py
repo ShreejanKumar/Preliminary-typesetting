@@ -74,7 +74,7 @@ elif page_type == "Copyright Page":
     font_size = st.text_input('Enter the Font Size')
     output_pdf = "copywright.pdf"
     if st.button("Create Copyright Page"):
-        create_copyright_page(author_name, typesetter_name, printer_name, output_pdf)   
+        create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size)   
         with open(output_pdf, "rb") as pdf_file:
             st.download_button(
                 label="Download Copywright PDF",
