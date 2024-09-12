@@ -121,7 +121,7 @@ elif page_type == "Others":
         
         with open(final_pdf, "rb") as pdf_file:
             st.download_button(
-                label="Download Glossary PDF",
+                label="Download PDF",
                 data=pdf_file,
                 file_name=final_pdf,
                 mime="application/pdf"
