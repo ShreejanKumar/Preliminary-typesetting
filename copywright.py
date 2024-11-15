@@ -4,7 +4,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.units import inch
 
-def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size):
+def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size, isbn):
     # Create a document with A4 size
     pdf = SimpleDocTemplate(output_pdf, pagesize=A4)
     
@@ -33,7 +33,7 @@ def create_copyright_page(author_name, typesetter_name, printer_name, output_pdf
         "",
         "All rights reserved. Enquiries concerning reproduction outside <br/> the scope of the above should be sent to NU VOICE PRESS <br/> at the address above.",
         "",
-        "ISBN: 978-81-963184-7-5",
+        f"ISBN: {isbn}",
         "",  # Add a spacer after the ISBN line
         f"Typeset by {typesetter_name}, Noida",
         f"Printed at {printer_name}",

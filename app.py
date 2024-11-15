@@ -169,9 +169,10 @@ if st.session_state['authenticated'] and not st.session_state['reset_mode']:
         typesetter_name = st.text_input("Enter the Typesetter's Name")
         printer_name = st.text_input("Enter the Printer's Name")
         font_size = st.text_input('Enter the Font Size')
+        isbn = st.text_input('Enter the ISBN')
         output_pdf = "copywright.pdf"
         if st.button("Create Copyright Page"):
-            create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size)  
+            create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size, isbn)  
             with open(output_pdf, "rb") as pdf_file:
                 st.download_button(
                     label="Download Copywright PDF",
