@@ -158,9 +158,9 @@ if st.session_state['authenticated'] and not st.session_state['reset_mode']:
         title_size = st.slider("Title Font Size", 24, 72, 48)
         subtitle_size = st.slider("Subtitle Font Size", 18, 36, 28)
         author_size = st.slider("Author Name Font Size", 12, 36, 24)
-        
+        press_name = st.selectbox("Press Name", options=["Nu Voice Press", "Solomon Press"])
         if st.button("Create Title Page"):
-            pdf_bytes = create_title_page(title, subtitle, author, font_name, title_size, subtitle_size, author_size)
+            pdf_bytes = create_title_page(title, subtitle, author, press_name, font_name, title_size, subtitle_size, author_size)
             st.download_button("Download PDF", pdf_bytes, file_name="title_page.pdf")
     
     elif page_type == "Copyright Page":
@@ -168,11 +168,13 @@ if st.session_state['authenticated'] and not st.session_state['reset_mode']:
         author_name = st.text_input("Enter the Author's Name")
         typesetter_name = st.text_input("Enter the Typesetter's Name")
         printer_name = st.text_input("Enter the Printer's Name")
-        font_size = st.text_input('Enter the Font Size')
+        cp_press_name = st.selectbox("Press Name", options=["Nu Voice Press", "Solomon Press"], key="cp_press_name")
+        cp_year = st.text_input("Year", value="Year", key="cp_year")
         isbn = st.text_input('Enter the ISBN')
+        font_size = st.text_input('Enter the Font Size')
         output_pdf = "copywright.pdf"
         if st.button("Create Copyright Page"):
-            create_copyright_page(author_name, typesetter_name, printer_name, output_pdf, font_size, isbn)  
+            create_copyright_page(author_name, typesetter_name, printer_name, cp_press_name, cp_year, isbn, output_pdf, font_size)  
             with open(output_pdf, "rb") as pdf_file:
                 st.download_button(
                     label="Download Copywright PDF",
